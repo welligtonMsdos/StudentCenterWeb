@@ -21,4 +21,11 @@ public class StudentCenterService : IStudentCenterService
 
         return await response.ReadContentAs<List<StudentCenterBaseDto>>();
     }
+
+    public async Task<StudentCenterBaseDto> GetByIdStudentCenterBase(int id)
+    {
+        var response = await _client.GetAsync(BASE_PATH + STUDENT_CENTER_BASE + "/" + id);
+
+        return await response.ReadContentAs<StudentCenterBaseDto>();
+    }
 }

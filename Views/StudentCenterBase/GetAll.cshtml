@@ -26,7 +26,11 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                 <button type="button" class="btn btn-outline-dark"><i class="fa-regular fa-pen-to-square"></i> Acessar</button>
+                 <button type="button" 
+                         class="btn btn-outline-dark"
+                            onclick="location.href='@Url.Action("Solicitation", "StudentCenterBase", new { id = item.Id })'">
+                         <i class="fa-regular fa-pen-to-square"></i> Acessar
+                 </button>
             </td>
         </tr>
 }

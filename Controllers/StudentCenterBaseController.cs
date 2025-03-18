@@ -28,6 +28,25 @@ public class StudentCenterBaseController : Controller
         }
     }
 
+    public async Task<IActionResult> Solicitation(int id)
+    {
+        try
+        {
+            var studentCenterBase = await _service.GetByIdStudentCenterBase(id);
+
+            if (studentCenterBase != null && !string.IsNullOrEmpty(studentCenterBase.Page))
+            {
+                return View(studentCenterBase.Page);
+            }
+
+            return View();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
