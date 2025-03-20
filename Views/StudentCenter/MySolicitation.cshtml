@@ -1,0 +1,58 @@
+﻿@model ICollection<StudentCenterWeb.DTOs.SolicitationDto>
+
+<div class="row mb-3">
+
+    <div class="col-12">
+
+        <div class="input-group flex-nowrap mb-2 gap-3 justify-content-center">
+
+            <button type="button" class="btn btn-outline-dark" id="btnAll">TODOS</button>
+
+            <button type="button" class="btn btn-outline-warning" id="btnPending">PENDENTE</button>
+
+            <button type="button" class="btn btn-outline-success" id="btnCompleted">CONCLUÍDO</button>
+
+            <button type="button" class="btn btn-outline-danger" id="btnDenied">NEGADO</button>
+           
+        </div>
+
+    </div>
+
+</div>
+
+<div id="cardSolicitation">
+
+    <partial name="~/Views/StudentCenter/PartialViews/_CardSolicitation.cshtml" />
+
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.btn');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const status = this.textContent.trim(); 
+                
+                fetch(`/StudentCenter/GetSolicitationsByStatus?status=${encodeURIComponent(status)}`, {
+                    method: 'GET',
+                })
+                .then(response => {
+                    if (!response.ok) {
+                            throw new Error("Error loading the partial view");
+                    }
+                    return response.text();
+                })
+                .then(html => {                   
+                        document.getElementById('cardSolicitation').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            });
+        });
+    });
+</script>
+
+

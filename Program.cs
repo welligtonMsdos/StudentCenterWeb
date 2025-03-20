@@ -32,10 +32,24 @@ namespace StudentCenterWeb
 
             app.UseAuthorization();
 
+            app.MapControllerRoute
+            (
+                name: "solicitation",
+                pattern: "mySolicitation/{id?}",
+                defaults: new { controller = "StudentCenter", action = "Solicitation" }
+            );
+
+            app.MapControllerRoute
+            (
+                name: "studentCenter",
+                pattern: "studentCenter",
+                defaults: new { controller = "StudentCenter", action = "GetAll" }
+            );
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
+           
             app.Run();
         }
     }

@@ -1,0 +1,46 @@
+﻿@using StudentCenterWeb.Util
+@model IEnumerable<StudentCenterWeb.DTOs.StudentCenterBaseDto>
+
+@{
+    ViewData["Title"] = "GetAll";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th hidden>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+
+                    @{
+                        string encodedId = EncoderHelper.EncodeId(item.Id);
+                    }
+
+                    <button type="button"
+                            class="btn btn-outline-dark"
+                            onclick="location.href='@Url.Action("Solicitation", "StudentCenter", new { studentId = encodedId })'">
+                        <i class="fa-regular fa-pen-to-square"></i> Acessar
+                    </button>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

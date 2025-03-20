@@ -9,6 +9,7 @@ public class StudentCenterService : IStudentCenterService
     private readonly HttpClient _client;
     private const string BASE_PATH = "api/v1/";
     private const string STUDENT_CENTER_BASE = "StudentCenterBase";
+    private const string SOLICITATION = "Solicitation";
 
     public StudentCenterService(HttpClient cliente)
     {
@@ -27,5 +28,23 @@ public class StudentCenterService : IStudentCenterService
         var response = await _client.GetAsync(BASE_PATH + STUDENT_CENTER_BASE + "/" + id);
 
         return await response.ReadContentAs<StudentCenterBaseDto>();
+    }
+
+    public async Task<ICollection<SolicitationDto>> GetByStudentId(int studentId)
+    {
+        var endPoint = string.Format("/GetByStudentId?studentId={0}", studentId);
+
+        var response = await _client.GetAsync(BASE_PATH + SOLICITATION + endPoint);
+
+        return await response.ReadContentAs<ICollection<SolicitationDto>>();
+    }
+
+    public async Task<ICollection<SolicitationDto>> GetSolicitationsByStatusAndStudentId(int statusId, int studentId)
+    {
+        var endPoint = string.Format("/GetByStatusId?statusId={0}&studentId={1}", statusId, studentId);
+
+        var response = await _client.GetAsync(BASE_PATH + SOLICITATION + endPoint);
+
+        return await response.ReadContentAs<ICollection<SolicitationDto>>();
     }
 }
