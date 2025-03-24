@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentCenterWeb.DTOs;
 using StudentCenterWeb.Interfaces;
 using StudentCenterWeb.Models;
 using System.Diagnostics;
@@ -18,34 +19,47 @@ public class StudentCenterController : Controller
     {
         try
         {
-            var studentCenterBase = await _service.GetAllStudentCenterBase();
+            var studentCenterBase = await _service.GetAllStudentCenterBase() ?? new List<StudentCenterBaseDto>();
 
             return View(studentCenterBase);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
     }
 
-    public async Task<IActionResult> Solicitation(string studentId)
+    public async Task<IActionResult> Solicitation(string Id)
     {
         try
         {
-            var id = Util.EncoderHelper.DecodeId(studentId);
+            var studentId = 2025;
 
-            var studentCenterBase = await _service.GetByIdStudentCenterBase(id);
+            var id = Util.EncoderHelper.DecodeId(Id);
 
-            var mySolicitation = await _service.GetByStudentId(2025);
+            var studentCenterBase = await _service.GetByIdStudentCenterBase(id);           
 
             if (studentCenterBase != null && !string.IsNullOrEmpty(studentCenterBase.Page))
             {
-                return View(studentCenterBase.Page, mySolicitation);
+                if(studentCenterBase.Id == 8)
+                {
+                    var mySolicitation = await _service.GetByStudentId(studentId) ?? new List<SolicitationDto>();
+
+                    return View(studentCenterBase.Page, mySolicitation);
+                }
+                else if(studentCenterBase.Id == 7)
+                {
+                    ViewBag.RequestType = await _service.GetAllRequestType() ?? new List<RequestTypeDto>();
+
+                    var createSolicitation = new SolicitationCreateDto(studentId);
+
+                    return View(studentCenterBase.Page, createSolicitation);
+                }
             }
 
             return View();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }

@@ -10,10 +10,18 @@ public class StudentCenterService : IStudentCenterService
     private const string BASE_PATH = "api/v1/";
     private const string STUDENT_CENTER_BASE = "StudentCenterBase";
     private const string SOLICITATION = "Solicitation";
+    private const string REQUEST_TYPE = "RequestType";
 
     public StudentCenterService(HttpClient cliente)
     {
         _client = cliente ?? throw new ArgumentNullException(nameof(cliente));
+    }
+
+    public async Task<ICollection<RequestTypeDto>> GetAllRequestType()
+    {
+        var response = await _client.GetAsync(BASE_PATH + REQUEST_TYPE);
+
+        return await response.ReadContentAs<List<RequestTypeDto>>();
     }
 
     public async Task<ICollection<StudentCenterBaseDto>> GetAllStudentCenterBase()

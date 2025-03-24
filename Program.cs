@@ -9,8 +9,15 @@ namespace StudentCenterWeb
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var uri = builder.Configuration["ServiceUrls:StudentCenterAPI"];
+
+            if (string.IsNullOrEmpty(uri))
+            {
+              throw new ArgumentNullException(nameof(uri), "The URI string cannot be null or empty.");
+            }
+
             builder.Services.AddHttpClient<IStudentCenterService, StudentCenterService>(c =>
-            c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:StudentCenterAPI"]));
+            c.BaseAddress = new Uri(uri));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
