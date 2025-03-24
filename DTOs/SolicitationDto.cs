@@ -4,7 +4,7 @@ public class SolicitationDto
 {
     public int Id { get; set; }
     public int StudentId { get; set; }
-    public string Description { get; set; }
-    public string DescriptionStatus { get; set; }
-    public string DescriptionRequestType { get; set; }
+    public required string Description { get; set; }
+    public required string DescriptionStatus { get; set; }
+    public required string DescriptionRequestType { get; set; }
 }

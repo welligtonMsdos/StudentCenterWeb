@@ -1,1 +1,66 @@
-﻿<h1>New Solicitation</h1>
+﻿@model StudentCenterWeb.DTOs.SolicitationCreateDto
+
+<div class="card col-12 col-md-12 col-lg-6">
+
+    <div class="card-header m-4">
+        Nova solicitação
+    </div>
+
+    <div class="card-body m-4">        
+
+        <div class="row mb-3">
+
+            <div class="col-12">
+
+                <select class="form-select form-select-lg mb-3" aria-label="selectRequestType">
+                    <option selected>Escolha uma opção...</option>
+                    @foreach (var item in ViewBag.RequestType)
+                    {
+                        <option value="@item.Id">@item.Description</option>
+                    }                    
+                </select>              
+
+            </div>           
+
+        </div>
+
+        <div class="row mb-3">
+
+             <div class="col-12">
+
+                <div class="mb-3">
+                    <label for="LabelDescription" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="Description" rows="3"></textarea>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card-footer">
+
+        <div class="row mb-3">
+
+            <div class="col-12">
+
+                <div class="d-flex justify-content-between mt-2">
+
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='@Url.Action("GetAll", "StudentCenter")'">
+                       Voltar
+                    </button>
+
+                    <button type="submit" class="btn btn-outline-dark">
+                        Salvar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
