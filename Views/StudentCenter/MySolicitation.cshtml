@@ -6,13 +6,13 @@
 
         <div class="input-group flex-nowrap mb-2 gap-3 justify-content-center">
 
-            <button type="button" class="btn btn-outline-dark" id="btnAll">TODOS</button>
+            <button type="button" class="btn btn-outline-secondary bg-secondary-subtle text-secondary rounded-pill" id="btnAll">Todos</button>
 
-            <button type="button" class="btn btn-outline-warning" id="btnPending">PENDENTE</button>
+            <button type="button" class="btn btn-outline-warning bg-warning-subtle text-warning rounded-pill" id="btnPending">Pendente</button>
 
-            <button type="button" class="btn btn-outline-success" id="btnCompleted">CONCLUÍDO</button>
+            <button type="button" class="btn btn-outline-success bg-success-subtle text-success rounded-pill" id="btnCompleted">Concluído</button>
 
-            <button type="button" class="btn btn-outline-danger" id="btnDenied">NEGADO</button>
+            <button type="button" class="btn btn-outline-danger bg-danger-subtle text-danger rounded-pill" id="btnDenied">Negado</button>
            
         </div>
 
@@ -33,6 +33,7 @@
 
         buttons.forEach(button => {
             button.addEventListener('click', function () {
+
                 const status = this.textContent.trim(); 
                 
                 fetch(`/StudentCenter/GetSolicitationsByStatus?status=${encodeURIComponent(status)}`, {

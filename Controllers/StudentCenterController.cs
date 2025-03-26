@@ -70,9 +70,9 @@ public class StudentCenterController : Controller
     {
         var statusId = 0;
 
-        if (status.Equals("PENDENTE")) statusId = 1;
-        else if (status.Equals("CONCLUÍDO")) statusId = 2;
-        else if (status.Equals("NEGADO")) statusId = 3;
+        if (status.Equals("Pendente")) statusId = 1;
+        else if (status.Equals("Concluído")) statusId = 2;
+        else if (status.Equals("Negado")) statusId = 3;
 
         var solicitations = await _service.GetSolicitationsByStatusAndStudentId(statusId, 2025);
 

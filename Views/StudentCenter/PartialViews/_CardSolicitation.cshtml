@@ -2,34 +2,30 @@
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
 
-
     @foreach (var item in Model)
     {
         <div class="col">
 
-            <div class="card border-dark mb-3" style="max-width: 20rem; height: 10rem">
 
-                <div class="card-header bg-dark text-white">@item.DescriptionRequestType</div>
-
-                <div class="card-body">
+            <div class="card border-secondary mb-3" style="max-width: 18rem;height: 12rem;">
+                <div class="card-header">@item.DescriptionRequestType</div>
+                <div class="card-body text-secondary">                    
+                    <p class="card-text">@item.Description</p>
 
                     @{
                         var badgeClass = item.DescriptionStatus switch
                         {
-                            "PENDENTE" => "badge text-bg-warning text-white",
-                            "CONCLUÍDO" => "badge text-bg-success",
-                            "NEGADO" => "badge text-bg-danger",
-                            _ => "badge text-bg-secondary"
+                            "PENDENTE" => "badge bg-warning-subtle text-warning rounded-pill",
+                            "CONCLUÍDO" => "badge bg-success-subtle text-success rounded-pill",                            
+                            _ => "badge bg-danger-subtle text-danger rounded-pill"
                         };
                     }
-
-                    <span class="@badgeClass">@item.DescriptionStatus</span>
-
-                    <p class="card-text mt-2">@item.Description</p>
-
+                    <span class="@badgeClass" style="position: absolute; bottom: 10px; right: 10px;">
+                        @item.DescriptionStatus.ToLower()
+                    </span>
+                             
                 </div>
-
-            </div>
+            </div>           
 
         </div>
     }
