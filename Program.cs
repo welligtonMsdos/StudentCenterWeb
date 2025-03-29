@@ -19,8 +19,18 @@ namespace StudentCenterWeb
             builder.Services.AddHttpClient<IStudentCenterService, StudentCenterService>(c =>
             c.BaseAddress = new Uri(uri));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader());
+            });
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
 
             var app = builder.Build();
 
@@ -34,6 +44,8 @@ namespace StudentCenterWeb
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseCors("AllowAll");
 
             app.UseRouting();
 

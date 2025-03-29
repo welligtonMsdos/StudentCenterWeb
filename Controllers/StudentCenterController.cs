@@ -13,8 +13,9 @@ public class StudentCenterController : Controller
     public StudentCenterController(IStudentCenterService service)
     {
         _service = service;
-    }
+    }   
 
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         try
@@ -29,6 +30,7 @@ public class StudentCenterController : Controller
         }
     }
 
+    [HttpGet]
     public async Task<IActionResult> Solicitation(string Id)
     {
         try
@@ -49,11 +51,9 @@ public class StudentCenterController : Controller
                 }
                 else if(studentCenterBase.Id == 7)
                 {
-                    ViewBag.RequestType = await _service.GetAllRequestType() ?? new List<RequestTypeDto>();
+                    ViewBag.RequestType = await _service.GetAllRequestType() ?? new List<RequestTypeDto>();                    
 
-                    var createSolicitation = new SolicitationCreateDto(studentId);
-
-                    return View(studentCenterBase.Page, createSolicitation);
+                    return View(studentCenterBase.Page);
                 }
             }
 
