@@ -8,5 +8,5 @@ public interface IStudentCenterService
     Task<StudentCenterBaseDto> GetByIdStudentCenterBase(int id);
     Task<ICollection<SolicitationDto>> GetByStudentId(int studentId);
     Task<ICollection<SolicitationDto>> GetSolicitationsByStatusAndStudentId(int statusId, int studentId);
-    Task<ICollection<RequestTypeDto>> GetAllRequestType();
+    Task<ICollection<RequestTypeDto>> GetAllRequestType();   
 }

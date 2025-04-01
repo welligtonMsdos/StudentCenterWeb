@@ -20,3 +20,25 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+section{    
+    height: 80vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bolha{    
+    width: 600px;
+    height: 600px;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    position: relative;
+}
+
+img{
+    position: absolute;
+    width: 40%;
+    height: 40%;
+}

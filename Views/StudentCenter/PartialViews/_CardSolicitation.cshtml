@@ -2,36 +2,75 @@
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
 
-
     @foreach (var item in Model)
     {
         <div class="col">
 
-            <div class="card border-dark mb-3" style="max-width: 20rem; height: 10rem">
 
-                <div class="card-header bg-dark text-white">@item.DescriptionRequestType</div>
-
-                <div class="card-body">
+            <div class="card border-secondary mb-3" style="max-width: 18rem;height: 12rem;">
+                <div class="card-header">@item.DescriptionRequestType</div>
+                <div class="card-body text-secondary">                    
+                    <p class="card-text">@item.Description</p>
 
                     @{
                         var badgeClass = item.DescriptionStatus switch
                         {
-                            "PENDENTE" => "badge text-bg-warning text-white",
-                            "CONCLUÍDO" => "badge text-bg-success",
-                            "NEGADO" => "badge text-bg-danger",
-                            _ => "badge text-bg-secondary"
+                            "PENDENTE" => "badge bg-warning-subtle text-warning rounded-pill",
+                            "CONCLUÍDO" => "badge bg-success-subtle text-success rounded-pill",                            
+                            _ => "badge bg-danger-subtle text-danger rounded-pill"
                         };
                     }
-
-                    <span class="@badgeClass">@item.DescriptionStatus</span>
-
-                    <p class="card-text mt-2">@item.Description</p>
-
+                    <span id="badge-@item.Id" class="@badgeClass" style="position: absolute; bottom: 10px; right: 10px;">
+                        @item.DescriptionStatus.ToLower()
+                    </span>
+                             
                 </div>
-
-            </div>
+            </div>           
 
         </div>
     }
 
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+<script>   
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7248/statusHub")
+        .withAutomaticReconnect()
+        .build();
+   
+    async function startConnection() {
+        try {
+            await connection.start();
+            console.log("Conexão com SignalR iniciada."); 
+        } catch (err) {
+            console.error("Erro ao conectar, tentando novamente...", err);
+            setTimeout(startConnection, 5000);
+        }
+    }
+
+    connection.on("ReceiveIdAndDescription", (id, description) => {
+        const badgeElement = document.getElementById(`badge-${id}`);
+
+        if (badgeElement) {
+            let newClass;
+            switch (description) {
+                case "concluído":
+                    newClass = "badge bg-success-subtle text-success rounded-pill";
+                    break;
+                default:
+                    newClass = "badge bg-danger-subtle text-danger rounded-pill";
+                    break;
+            }
+            badgeElement.className = newClass;
+
+            badgeElement.textContent = description;
+        }
+
+        console.log(`ID: ${id}, Description: ${description}`);
+    });
+
+    connection.start().catch(err => console.error(err));
+
+</script>
