@@ -1,5 +1,7 @@
 using StudentCenterWeb.Interfaces;
 using StudentCenterWeb.Services;
+using StudentCenterWeb.Util;
+using System.Net.WebSockets;
 
 namespace StudentCenterWeb
 {
@@ -30,7 +32,7 @@ namespace StudentCenterWeb
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-
+            builder.Services.AddSignalR();
 
             var app = builder.Build();
 
@@ -68,8 +70,23 @@ namespace StudentCenterWeb
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-           
+            
+            app.MapHub<StatusHub>("/statusHub");
+
             app.Run();
+
+            //async Task HandleWebSocketConnection(WebSocket webSocket)
+            //{
+            //    var buffer = new byte[1024 * 4];
+            //    WebSocketReceiveResult result;
+            //    do
+            //    {
+            //        result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            //        await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+            //    } while (!result.CloseStatus.HasValue);
+
+            //    await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+            //}
         }
     }
 }
