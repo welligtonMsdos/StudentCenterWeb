@@ -1,0 +1,50 @@
+﻿<div class="row mb-3">
+
+    <div class="col-12">
+
+        <div class="input-group flex-nowrap mb-2 gap-3 justify-content-center">
+
+            <button type="button" class="btn btn-outline-secondary bg-secondary-subtle text-secondary rounded-pill" id="btnAll">Todos</button>
+
+            <button type="button" class="btn btn-outline-warning bg-warning-subtle text-warning rounded-pill" id="btnPending">Pendente</button>
+
+            <button type="button" class="btn btn-outline-success bg-success-subtle text-success rounded-pill" id="btnCompleted">Concluído</button>
+
+            <button type="button" class="btn btn-outline-danger bg-danger-subtle text-danger rounded-pill" id="btnDenied">Negado</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.btn');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+
+                const status = this.textContent.trim();
+
+                fetch(`/StudentCenter/GetSolicitationsByStatus?status=${encodeURIComponent(status)}`, {
+                    method: 'GET',
+                })
+                .then(response => {
+                    if (!response.ok) {
+                            throw new Error("Error loading the partial view");
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                        document.getElementById('cardSolicitation').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            });
+        });
+    });
+</script>
