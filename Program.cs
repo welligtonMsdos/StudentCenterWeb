@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using StudentCenterWeb.Interfaces;
 using StudentCenterWeb.Services;
 using StudentCenterWeb.Util;
-using System.Net.WebSockets;
 
 namespace StudentCenterWeb
 {
@@ -29,8 +29,18 @@ namespace StudentCenterWeb
                            .AllowAnyHeader());
             });
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie(options =>
+           {
+               options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+               options.SlidingExpiration = true;
+               options.AccessDeniedPath = "/Home/Index";
+           });
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddSignalR();
 
@@ -73,20 +83,7 @@ namespace StudentCenterWeb
             
             app.MapHub<StatusHub>("/statusHub");
 
-            app.Run();
-
-            //async Task HandleWebSocketConnection(WebSocket webSocket)
-            //{
-            //    var buffer = new byte[1024 * 4];
-            //    WebSocketReceiveResult result;
-            //    do
-            //    {
-            //        result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            //        await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
-            //    } while (!result.CloseStatus.HasValue);
-
-            //    await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-            //}
+            app.Run();            
         }
     }
 }

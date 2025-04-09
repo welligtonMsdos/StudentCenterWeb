@@ -1,6 +1,7 @@
 ﻿using StudentCenterWeb.DTOs;
 using StudentCenterWeb.Interfaces;
 using StudentCenterWeb.Util;
+using System.Net.Http.Headers;
 
 namespace StudentCenterWeb.Services;
 
@@ -11,10 +12,18 @@ public class StudentCenterService : IStudentCenterService
     private const string STUDENT_CENTER_BASE = "StudentCenterBase";
     private const string SOLICITATION = "Solicitation";
     private const string REQUEST_TYPE = "RequestType";
+    private string token;
+    private readonly IHttpContextAccessor _accessor;
 
-    public StudentCenterService(HttpClient cliente)
+    public StudentCenterService(HttpClient cliente, IHttpContextAccessor accessor)
     {
         _client = cliente ?? throw new ArgumentNullException(nameof(cliente));
+
+        _accessor = accessor;
+
+        token = _accessor.HttpContext.Request.Cookies["Token"];
+
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
     }
 
     public async Task<ICollection<RequestTypeDto>> GetAllRequestType()
@@ -38,7 +47,7 @@ public class StudentCenterService : IStudentCenterService
         return await response.ReadContentAs<StudentCenterBaseDto>();
     }
 
-    public async Task<ICollection<SolicitationDto>> GetByStudentId(int studentId)
+    public async Task<ICollection<SolicitationDto>> GetByStudentId(string studentId)
     {
         var endPoint = string.Format("/GetByStudentId?studentId={0}", studentId);
 
@@ -47,7 +56,7 @@ public class StudentCenterService : IStudentCenterService
         return await response.ReadContentAs<ICollection<SolicitationDto>>();
     }
 
-    public async Task<ICollection<SolicitationDto>> GetSolicitationsByStatusAndStudentId(int statusId, int studentId)
+    public async Task<ICollection<SolicitationDto>> GetSolicitationsByStatusAndStudentId(int statusId, string studentId)
     {
         var endPoint = string.Format("/GetByStatusId?statusId={0}&studentId={1}", statusId, studentId);
 

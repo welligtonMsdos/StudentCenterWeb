@@ -19,7 +19,7 @@ public class StudentCenterController : Controller
     public async Task<IActionResult> GetAll()
     {
         try
-        {
+        {   
             var studentCenterBase = await _service.GetAllStudentCenterBase() ?? new List<StudentCenterBaseDto>();
 
             return View(studentCenterBase);
@@ -35,7 +35,7 @@ public class StudentCenterController : Controller
     {
         try
         {
-            var studentId = 2025;
+            var studentId = "67f42b4a406f3f471ac3ebcf";
 
             var id = Util.EncoderHelper.DecodeId(Id);
 
@@ -74,7 +74,9 @@ public class StudentCenterController : Controller
         else if (status.Equals("Concluído")) statusId = 2;
         else if (status.Equals("Negado")) statusId = 3;
 
-        var solicitations = await _service.GetSolicitationsByStatusAndStudentId(statusId, 2025);
+        var studentId = "67f42b4a406f3f471ac3ebcf";
+
+        var solicitations = await _service.GetSolicitationsByStatusAndStudentId(statusId, studentId);
 
         return PartialView("~/Views/StudentCenter/PartialViews/_CardSolicitation.cshtml", solicitations);
     }
