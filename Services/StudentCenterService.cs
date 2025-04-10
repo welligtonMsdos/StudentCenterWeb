@@ -1,7 +1,6 @@
 ﻿using StudentCenterWeb.DTOs;
 using StudentCenterWeb.Interfaces;
 using StudentCenterWeb.Util;
-using System.Net.Http.Headers;
 
 namespace StudentCenterWeb.Services;
 
@@ -28,7 +27,7 @@ public class StudentCenterService : IStudentCenterService
 
     public async Task<ICollection<RequestTypeDto>> GetAllRequestType()
     {
-        var response = await _client.GetAsync(BASE_PATH + REQUEST_TYPE);
+        var response = await _client.GetAsync(BASE_PATH + REQUEST_TYPE + "/GetAll");
 
         return await response.ReadContentAs<List<RequestTypeDto>>();
     }

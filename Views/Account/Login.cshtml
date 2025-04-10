@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="height: 90vh">
+    <div class="card text-bg-dark p-4" style="width: 24rem">
+        <h2 class="text-center mb-4">Login</h2>
+        <form method="POST" asp-controller="Account" asp-action="Login">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha" required>
+            </div>
+            <button type="submit" class="btn btn-secondary w-100">Entrar</button>
+        </form>
+
+    </div>
+</div>
+
+
+@* @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_LoginScriptsPartial");
+    }
+} *@

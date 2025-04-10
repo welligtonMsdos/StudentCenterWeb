@@ -13,13 +13,22 @@ namespace StudentCenterWeb
 
             var uri = builder.Configuration["ServiceUrls:StudentCenterAPI"];
 
+            var uriAuth = builder.Configuration["ServiceUrls:StudentCenterAuthAPI"];
+
             if (string.IsNullOrEmpty(uri))
             {
               throw new ArgumentNullException(nameof(uri), "The URI string cannot be null or empty.");
             }
 
+            if (string.IsNullOrEmpty(uriAuth))
+            {
+                throw new ArgumentNullException(nameof(uri), "The URI string cannot be null or empty.");
+            }
+
             builder.Services.AddHttpClient<IStudentCenterService, StudentCenterService>(c =>
             c.BaseAddress = new Uri(uri));
+
+            builder.Services.AddHttpClient<IStudentCenterAuthService, StudentCenterAuthService>(c => c.BaseAddress = new Uri(uriAuth));
 
             builder.Services.AddCors(options =>
             {
@@ -34,7 +43,7 @@ namespace StudentCenterWeb
            {
                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                options.SlidingExpiration = true;
-               options.AccessDeniedPath = "/Home/Index";
+               options.AccessDeniedPath = "/Account/Login";
            });
 
             // Add services to the container.
@@ -45,6 +54,16 @@ namespace StudentCenterWeb
             builder.Services.AddSignalR();
 
             var app = builder.Build();
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+
+                if (context.Response.StatusCode == 401) // Verifica se o status é Unauthorized
+                {
+                    context.Response.Redirect("/Account/Login"); // Redireciona para a tela de login
+                }
+            });
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -79,7 +98,7 @@ namespace StudentCenterWeb
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Login}/{id?}");
             
             app.MapHub<StatusHub>("/statusHub");
 

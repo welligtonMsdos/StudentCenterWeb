@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using StudentCenterWeb.DTOs;
 using StudentCenterWeb.Interfaces;
 using StudentCenterWeb.Models;
@@ -9,11 +10,17 @@ namespace StudentCenterWeb.Controllers;
 public class StudentCenterController : Controller
 {
     private readonly IStudentCenterService _service;
+    private readonly IHttpContextAccessor _accessor;
+    private readonly string _userId;
 
-    public StudentCenterController(IStudentCenterService service)
+    public StudentCenterController(IStudentCenterService service, IHttpContextAccessor accessor)
     {
         _service = service;
-    }   
+
+        _accessor = accessor;
+
+        _userId = _accessor.HttpContext.Request.Cookies["userId"];                 
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
@@ -26,7 +33,7 @@ public class StudentCenterController : Controller
         }
         catch (Exception)
         {
-            throw;
+            return Unauthorized();
         }
     }
 
@@ -35,8 +42,6 @@ public class StudentCenterController : Controller
     {
         try
         {
-            var studentId = "67f42b4a406f3f471ac3ebcf";
-
             var id = Util.EncoderHelper.DecodeId(Id);
 
             var studentCenterBase = await _service.GetByIdStudentCenterBase(id);           
@@ -45,7 +50,7 @@ public class StudentCenterController : Controller
             {
                 if(studentCenterBase.Id == 8)
                 {
-                    var mySolicitation = await _service.GetByStudentId(studentId) ?? new List<SolicitationDto>();
+                    var mySolicitation = await _service.GetByStudentId(_userId) ?? new List<SolicitationDto>();
 
                     return View(studentCenterBase.Page, mySolicitation);
                 }
@@ -72,11 +77,9 @@ public class StudentCenterController : Controller
 
         if (status.Equals("Pendente")) statusId = 1;
         else if (status.Equals("Concluído")) statusId = 2;
-        else if (status.Equals("Negado")) statusId = 3;
+        else if (status.Equals("Negado")) statusId = 3;       
 
-        var studentId = "67f42b4a406f3f471ac3ebcf";
-
-        var solicitations = await _service.GetSolicitationsByStatusAndStudentId(statusId, studentId);
+        var solicitations = await _service.GetSolicitationsByStatusAndStudentId(statusId, _userId);
 
         return PartialView("~/Views/StudentCenter/PartialViews/_CardSolicitation.cshtml", solicitations);
     }
