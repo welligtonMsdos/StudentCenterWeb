@@ -76,12 +76,6 @@
 </form>
 
 <script>
-       
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }    
 
     (() => {
         'use strict';
@@ -116,18 +110,16 @@
             const requestTypeId = document.getElementById("requestTypeId").value;
             const description = document.getElementById("descricao").value;
 
-            fetch('https://localhost:7248/api/v1/Solicitation', {
+            fetch('/StudentCenter/SaveSolicitation', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getCookie("Token")}`,
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    StudentId: getCookie("userId"),
                     Description: description,
                     RequestTypeId: requestTypeId
+                  })
                 })
-            })
                 .then(response => response.json())
                 .then(data => {
                     if(data.success){
@@ -138,8 +130,10 @@
                     
                 })
                 .catch(error => {                   
-                    toastr.error('Erro ao salvar');
+                    toastr.error(error.message);
                 });
+          
+          
         };
 
     })();

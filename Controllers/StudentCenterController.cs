@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NuGet.Common;
 using StudentCenterWeb.DTOs;
 using StudentCenterWeb.Interfaces;
 using StudentCenterWeb.Models;
@@ -11,7 +10,7 @@ public class StudentCenterController : Controller
 {
     private readonly IStudentCenterService _service;
     private readonly IHttpContextAccessor _accessor;
-    private readonly string _userId;
+    private readonly string _userId;  
 
     public StudentCenterController(IStudentCenterService service, IHttpContextAccessor accessor)
     {
@@ -19,7 +18,24 @@ public class StudentCenterController : Controller
 
         _accessor = accessor;
 
-        _userId = _accessor.HttpContext.Request.Cookies["userId"];                 
+        _userId = _accessor.HttpContext.Request.Cookies["userId"];       
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SaveSolicitation([FromBody] SolicitationCreateDto model)
+    {
+        try
+        {
+            var createSolicitation = new SolicitationCreateDto(_userId, model.Description, model.RequestTypeId);
+
+            var result = await _service.SaveSolicitation(createSolicitation);
+
+            return Ok(new { success = result.success, message = result.message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
     }
 
     [HttpGet]
@@ -56,7 +72,7 @@ public class StudentCenterController : Controller
                 }
                 else if(studentCenterBase.Id == 7)
                 {
-                    ViewBag.RequestType = await _service.GetAllRequestType() ?? new List<RequestTypeDto>();                    
+                    ViewBag.RequestType = await _service.GetAllRequestType() ?? new List<RequestTypeDto>();                   
 
                     return View(studentCenterBase.Page);
                 }

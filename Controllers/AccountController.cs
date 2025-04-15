@@ -41,9 +41,9 @@ public class AccountController : Controller
 
         var claims = jwtToken.Claims.ToList();       
 
-        Response.Cookies.Append("Token", token, cookieOptions);
+        Response.Cookies.Append("Token", token, cookieOptions);        
 
-        Response.Cookies.Append("userId", claims[1].ToString(), cookieOptions);
+        Response.Cookies.Append("userId", claims[1].ToString().Replace("id:", "").Trim(), cookieOptions);      
 
         return RedirectToAction("Index", "Home");       
     }

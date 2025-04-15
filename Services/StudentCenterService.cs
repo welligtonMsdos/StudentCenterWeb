@@ -59,8 +59,15 @@ public class StudentCenterService : IStudentCenterService
     {
         var endPoint = string.Format("/GetByStatusId?statusId={0}&studentId={1}", statusId, studentId);
 
-        var response = await _client.GetAsync(BASE_PATH + SOLICITATION + endPoint);
+        var response = await _client.GetAsync(BASE_PATH + SOLICITATION);
 
         return await response.ReadContentAs<ICollection<SolicitationDto>>();
+    }
+
+    public async Task<ResponseDto> SaveSolicitation(SolicitationCreateDto solicitationCreateDto)
+    {       
+        var response = await _client.PostAsJson(BASE_PATH + SOLICITATION, solicitationCreateDto);
+
+        return await response.ReadContentAs<ResponseDto>();
     }
 }
