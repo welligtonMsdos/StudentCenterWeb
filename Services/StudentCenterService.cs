@@ -59,7 +59,7 @@ public class StudentCenterService : IStudentCenterService
     {
         var endPoint = string.Format("/GetByStatusId?statusId={0}&studentId={1}", statusId, studentId);
 
-        var response = await _client.GetAsync(BASE_PATH + SOLICITATION);
+        var response = await _client.GetAsync(BASE_PATH + SOLICITATION + endPoint);
 
         return await response.ReadContentAs<ICollection<SolicitationDto>>();
     }

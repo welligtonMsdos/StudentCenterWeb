@@ -33,7 +33,7 @@ public class AccountController : Controller
             SameSite = SameSiteMode.None
         };
 
-        var token = result.message;
+        var token = result.Data.Result;
 
         var handler = new JwtSecurityTokenHandler();
 

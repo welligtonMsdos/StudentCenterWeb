@@ -64,13 +64,13 @@ public class StudentCenterController : Controller
 
             if (studentCenterBase != null && !string.IsNullOrEmpty(studentCenterBase.Page))
             {
-                if(studentCenterBase.Id == 8)
+                if(studentCenterBase.Id == 2)
                 {
                     var mySolicitation = await _service.GetByStudentId(_userId) ?? new List<SolicitationDto>();
 
                     return View(studentCenterBase.Page, mySolicitation);
                 }
-                else if(studentCenterBase.Id == 7)
+                else if(studentCenterBase.Id == 1)
                 {
                     ViewBag.RequestType = await _service.GetAllRequestType() ?? new List<RequestTypeDto>();                   
 
@@ -91,9 +91,9 @@ public class StudentCenterController : Controller
     {
         var statusId = 0;
 
-        if (status.Equals("Pendente")) statusId = 1;
-        else if (status.Equals("Concluído")) statusId = 2;
-        else if (status.Equals("Negado")) statusId = 3;       
+        if (status.Equals("Pendente")) statusId = 3;
+        else if (status.Equals("Concluído")) statusId = 1;
+        else if (status.Equals("Negado")) statusId = 2;       
 
         var solicitations = await _service.GetSolicitationsByStatusAndStudentId(statusId, _userId);
 

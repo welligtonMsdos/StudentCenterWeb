@@ -1,4 +1,13 @@
 ﻿namespace StudentCenterWeb.DTOs;
 
-public record UserDataLoginDto(bool success,
-                               string message);
+public class UserDataLoginDto
+{
+    public bool success { get; set; }
+    public string message { get; set; }
+    public DataResponse Data { get; set; }
+}
+
+public class DataResponse 
+{
+    public string Result { get; set; }
+}

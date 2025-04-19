@@ -25,9 +25,13 @@
         const buttons = document.querySelectorAll('.btn');
 
         buttons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function () {              
 
-                const status = this.textContent.trim();
+                const status = this.textContent.trim();              
+
+                //fetch(`/StudentCenter/GetSolicitationsByStatus?status=${encodeURIComponent(status)}`, {
+
+                //fetch(`/StudentCenter/GetSolicitationsByStatus?status=${status}`, {
 
                 fetch(`/StudentCenter/GetSolicitationsByStatus?status=${encodeURIComponent(status)}`, {
                     method: 'GET',
