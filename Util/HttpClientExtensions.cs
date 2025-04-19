@@ -18,14 +18,14 @@ public static class HttpClientExtensions
         ?? throw new ApplicationException("Couldn't deserialize the response");
     }
 
-    //public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T data)
-    //{
-    //    var dataAsString = JsonSerializer.Serialize(data);
+    public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T data)
+    {
+        var dataAsString = JsonSerializer.Serialize(data);
 
-    //    var content = new StringContent(dataAsString);
+        var content = new StringContent(dataAsString);
 
-    //    content.Headers.ContentType = _contentType;
+        content.Headers.ContentType = _contentType;
 
-    //    return httpClient.PostAsync(url, content);
-    //}
+        return httpClient.PostAsync(url, content);
+    }
 }
