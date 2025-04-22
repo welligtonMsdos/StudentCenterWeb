@@ -29,8 +29,8 @@ public class AccountController : Controller
         var cookieOptions = new CookieOptions
         {
             Secure = true,
-            HttpOnly = true,
-            SameSite = SameSiteMode.None
+            HttpOnly = true,            
+            SameSite = SameSiteMode.Lax,            
         };
 
         var token = result.Data.Result;
