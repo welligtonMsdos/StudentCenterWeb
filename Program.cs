@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using StudentCenterWeb.Interfaces;
 using StudentCenterWeb.Services;
-using StudentCenterWeb.Util;
 
 namespace StudentCenterWeb
 {
@@ -100,7 +99,7 @@ namespace StudentCenterWeb
                 name: "default",
                 pattern: "{controller=Account}/{action=Login}/{id?}");
             
-            app.MapHub<StatusHub>("/statusHub");
+            //app.MapHub<StatusHub>("/statusHub");
 
             app.Run();            
         }

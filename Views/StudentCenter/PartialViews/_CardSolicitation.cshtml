@@ -36,16 +36,16 @@
 
 <script>   
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:7248/statusHub")
+        .withUrl("https://studentcenter-api-ggcqgkaqafgxenep.brazilsouth-01.azurewebsites.net/statusHub")
         .withAutomaticReconnect()
         .build();
    
     async function startConnection() {
         try {
             await connection.start();
-            //console.log("Conexão com SignalR iniciada."); 
+            console.log("Conexão com SignalR iniciada."); 
         } catch (err) {
-            //console.error("Erro ao conectar, tentando novamente...", err);
+            console.error("Erro ao conectar, tentando novamente...", err);
             setTimeout(startConnection, 5000);
         }
     }
